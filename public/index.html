@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Carrom Pool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="homeScreen" class="screen active">
+    <div class="home-card">
+      <div class="logo">🎯</div>
+      <h1>Carrom Pool</h1>
+      <p class="subtitle">Classic board • smooth physics • realistic sound</p>
+
+      <label class="label">Your name</label>
+      <input id="nameInput" class="input" maxlength="18" placeholder="Enter your name" value="Player 1" />
+
+      <label class="label">AI difficulty</label>
+      <select id="difficultySelect" class="input">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <button id="singleBtn" class="btn primary">🎮 Play vs AI</button>
+      <button id="createBtn" class="btn">🌐 Create Online Room</button>
+
+      <div class="divider"><span>OR</span></div>
+
+      <div class="join-row">
+        <input id="roomInput" class="input" maxlength="4" placeholder="ROOM CODE" />
+        <button id="joinBtn" class="btn">Join</button>
+      </div>
+
+      <div id="homeMessage" class="message"></div>
+
+      <div class="features">
+        <div>🪙 Real physics</div>
+        <div>🎵 Background music</div>
+        <div>🔊 Collision sounds</div>
+        <div>📱 Touch controls</div>
+        <div>⚡ Power control</div>
+        <div>🌐 Online rooms</div>
+      </div>
+
+      <button id="homeThemeBtn" class="small-btn">☀️ / 🌙 Theme</button>
+    </div>
+  </main>
+
+  <main id="gameScreen" class="screen">
+    <header class="topbar">
+      <div>
+        <strong>Carrom Pool</strong>
+        <span id="roomLabel"></span>
+      </div>
+      <div class="top-actions">
+        <button id="musicBtn" class="icon-btn" title="Music">🎵</button>
+        <button id="soundBtn" class="icon-btn" title="Sound">🔊</button>
+        <button id="pauseBtn" class="icon-btn">⏸</button>
+        <button id="leaveBtn" class="icon-btn danger">🚪</button>
+      </div>
+    </header>
+
+    <section class="players">
+      <div id="p1Card" class="player-card active-player">
+        <div class="avatar">1</div>
+        <div class="player-info">
+          <b id="p1Name">Player 1</b>
+          <span>Score: <strong id="p1Score">0</strong></span>
+        </div>
+        <div id="p1Timer" class="timer">30</div>
+      </div>
+
+      <div id="p2Card" class="player-card">
+        <div class="avatar">2</div>
+        <div class="player-info">
+          <b id="p2Name">AI</b>
+          <span>Score: <strong id="p2Score">0</strong></span>
+        </div>
+        <div id="p2Timer" class="timer">30</div>
+      </div>
+    </section>
+
+    <section class="game-layout">
+      <div class="board-wrap">
+        <canvas id="gameCanvas" width="720" height="720"></canvas>
+        <div id="waitingOverlay" class="overlay hidden">
+          <div class="overlay-card">
+            <div class="loader"></div>
+            <h2>Waiting for opponent</h2>
+            <p>Room code</p>
+            <div id="roomCodeDisplay" class="room-code">----</div>
+            <button id="copyRoomBtn" class="btn">Copy code</button>
+          </div>
+        </div>
+
+        <div id="pauseOverlay" class="overlay hidden">
+          <div class="overlay-card">
+            <h2>⏸ Game Paused</h2>
+            <button id="resumeBtn" class="btn primary">Resume</button>
+          </div>
+        </div>
+
+        <div id="resultOverlay" class="overlay hidden">
+          <div class="overlay-card">
+            <div id="resultIcon" class="result-icon">🏆</div>
+            <h2 id="resultTitle">Game Over</h2>
+            <p id="resultMessage"></p>
+            <div id="resultScore" class="result-score"></div>
+            <div class="result-actions">
+              <button id="rematchBtn" class="btn primary">🔄 Rematch</button>
+              <button id="homeBtn" class="btn">🏠 Home</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="controls">
+        <div class="control-card">
+          <div class="control-title">Striker Position</div>
+          <p>Drag the striker ◀ left / right ▶</p>
+          <input id="positionSlider" type="range" min="85" max="635" value="360" />
+        </div>
+
+        <div class="control-card">
+          <div class="control-title">Aim</div>
+          <p>Drag from the striker toward your target</p>
+          <div class="aim-readout"><span id="angleText">0°</span></div>
+        </div>
+
+        <div class="control-card">
+          <div class="control-title">Power</div>
+          <input id="powerSlider" type="range" min="12" max="100" value="55" />
+          <div class="power-row">
+            <span>Soft</span>
+            <b id="powerText">55%</b>
+            <span>Strong</span>
+          </div>
+        </div>
+
+        <button id="shootBtn" class="btn shoot">🎯 SHOOT</button>
+        <button id="resetAimBtn" class="small-btn">↩ Reset aim</button>
+
+        <div class="tip">
+          <b>Desktop:</b> drag striker horizontally, then drag on the board to aim.<br>
+          <b>Mobile:</b> touch and drag the striker or use the sliders. Set power and tap SHOOT.
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
